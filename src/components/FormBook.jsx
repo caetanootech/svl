@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 
 export function FormBook() {
   const [validated, setValidated] = useState(false);
+  let [estados, setEstados] = useState([])
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -18,8 +19,24 @@ export function FormBook() {
     setValidated(true);
   };
 
+  const fetchEstados = () => {
+    // Por padrão o método fetch é o GET
+    fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados')
+      .then(response => response.json())
+      .then(data => {
+        console.log('estados', data)
+        setEstados(data);
+      })
+  }
+
+  useEffect(() => {
+    console.log('useEffect')
+    fetchEstados();
+  },{})
+
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      {console.log('return')}
       <Row className="mb-3">
         <Form.Group as={Col} md="4" controlId="validationCustom01">
           <Form.Label>Título</Form.Label>
@@ -27,7 +44,7 @@ export function FormBook() {
             required
             type="text"
             placeholder="Digite o título da obra"
-            //="Mark"
+          //="Mark"
           />
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
@@ -37,7 +54,7 @@ export function FormBook() {
             required
             type="text"
             placeholder="Digite o nome do autor da obra"
-            //="Otto"
+          //="Otto"
           />
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
@@ -66,12 +83,14 @@ export function FormBook() {
           </Form.Control.Feedback>
         </Form.Group>
         <Form.Group as={Col} md="3" controlId="validationCustom04">
-          <Form.Label>State</Form.Label>
-          <Form.Control type="text" placeholder="State" required />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid state.
-          </Form.Control.Feedback>
+          <Form.Label>Estados</Form.Label>
+          <Form.Select aria-label="Default select example">
+            <option>Selecione..</option>
+            {console.log('estados',estados)}
+          </Form.Select>
+
         </Form.Group>
+
         <Form.Group as={Col} md="3" controlId="validationCustom05">
           <Form.Label>Zip</Form.Label>
           <Form.Control type="text" placeholder="Zip" required />
@@ -80,7 +99,7 @@ export function FormBook() {
           </Form.Control.Feedback>
         </Form.Group>
       </Row>
-      
+
       <Button type="submit">Submit form</Button>
     </Form>
   );
