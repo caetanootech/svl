@@ -1,29 +1,37 @@
 import React, { useEffect, useState } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
+
+
 
 function BookTable() {
 
-    let [posts, setPosts] = useState([])
+    let [comments, setComments] = useState([])
+// 1 - Criar o state que vai conter a lista da api
 
+// 2 - Criar o objeto colunas, no qual o dataField é a propriedade do objeto
     const columns = [
         {
             dataField: 'id',
-            text: 'Id'
+            text: 'ID'
         }, {
-            dataField: 'title',
-            text: 'Título'
+            dataField: 'name',
+            text: 'Nome'
+        }, {
+            dataField: 'email',
+            text: 'E-mail'
         }, {
             dataField: 'body',
-            text: 'texto'
+            text: 'Texto'
         }
     ]
 
     const getPosts = () => {
-        fetch('https://jsonplaceholder.typicode.com/posts')
+        fetch('https://jsonplaceholder.typicode.com/comments')
             .then(response => response.json())
             .then(data => {
                 //console.log('posts', data)
-                setPosts(data)
+                setComments(data)
             })
     }
 
@@ -32,34 +40,9 @@ function BookTable() {
 
     }, []);
 
-    // const columns = [{
-    //     dataField: 'id',
-    //     text: 'Product ID'
-    // }, {
-    //     dataField: 'name',
-    //     text: 'Product Name'
-    // }, {
-    //     dataField: 'price',
-    //     text: 'Product Price'
-    // }];
-
-    // const products = [{
-    //     id: '1',
-    //     name: 'livro 1',
-    //     price: '40,00'
-    // }, {
-    //     id: '2',
-    //     name: 'livro 2',
-    //     price: '50,00'
-    // }, {
-    //     id: '3',
-    //     name: 'livro 3',
-    //     price: '70,00'
-    // }]
-
     return (
         <div>
-            <BootstrapTable keyField='id' data={posts} columns={columns} />
+            <BootstrapTable keyField='id' data={comments} columns={columns} pagination={paginationFactory() } />
         </div>
     )
 }
