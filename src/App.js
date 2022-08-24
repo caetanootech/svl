@@ -11,8 +11,9 @@ function App() {
       <NavBar />
       
       <div className='container'>
-      <FormBook />
-      <BookTable/>
+        
+      {/* <FormBook />
+      <BookTable/> */}
     </div>
     </div>
   );
